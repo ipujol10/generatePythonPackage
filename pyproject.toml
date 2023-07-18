@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "package_file_generator"
+name = "package_files_generator"
 version = "0.0.1"
 authors = [
     { name = "Iñaki Pujol", email = "ipujol10@gmail.com" }
