@@ -1,6 +1,6 @@
 import unittest
 import os
-from package_files_generator.generator import generate
+from package_files_generator.generator import generate, create_dir
 import shutil
 
 
@@ -28,3 +28,23 @@ class TestPackaging(unittest.TestCase):
         self.assertTrue(os.path.isfile(f"{dir}/README.md"))
         self.assertTrue(os.path.isfile(f"{dir}/src/{package_name}/\
                 __init__.py"))
+
+
+class TestCreateUnits(unittest.TestCase):
+    def setUp(self) -> None:
+        path = os.path.dirname(os.path.abspath(__file__))
+        self.cases = f"{path}/cases"
+
+    def test_create_dir_no_exists(self) -> None:
+        package_name = "create_dir"
+        dir = f"{self.cases}/{package_name}"
+        self.assertFalse(os.path.isdir(f"{dir}/test"))
+        create_dir("test", dir)
+        self.assertTrue(os.path.isdir(f"{dir}/test"))
+
+    def test_create_dir_exists(self) -> None:
+        package_name = "create_dir"
+        dir = f"{self.cases}/{package_name}"
+        self.assertTrue(os.path.isdir(f"{dir}/test"))
+        create_dir("test", dir)
+        self.assertTrue(os.path.isdir(f"{dir}/test"))
