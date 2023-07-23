@@ -9,7 +9,12 @@ def generate(package_name: str) -> None:
 
 
 def create_dir(directory_name: str, path: str | None = None) -> None:
-    raise NotImplementedError
+    if path is None:
+        dir = directory_name
+    else:
+        dir = f"{path}/{directory_name}"
+    if not os.path.exists(dir):
+        os.mkdir(dir)
 
 
 def main() -> None:

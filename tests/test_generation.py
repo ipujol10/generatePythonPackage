@@ -4,7 +4,13 @@ from package_files_generator.generator import generate, create_dir
 import shutil
 
 
-class TestPackaging(unittest.TestCase):
+class Base:
+    def remove(self, path: str) -> None:
+        if os.isdir(path):
+            shutil.rmtree(path)
+
+
+class TestPackaging(unittest.TestCase, Base):
     def setUp(self) -> None:
         path = os.path.dirname(os.path.abspath(__file__))
         self.cases = f"{path}/cases"
@@ -30,10 +36,13 @@ class TestPackaging(unittest.TestCase):
                 __init__.py"))
 
 
-class TestCreateUnits(unittest.TestCase):
+class TestCreateUnits(unittest.TestCase, Base):
     def setUp(self) -> None:
         path = os.path.dirname(os.path.abspath(__file__))
         self.cases = f"{path}/cases"
+
+    def tearDown(self) -> None:
+        self.remove(f"{self.cases}/create_dir/test")
 
     def test_create_dir_no_exists(self) -> None:
         package_name = "create_dir"
