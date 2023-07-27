@@ -9,12 +9,9 @@ def generate(package_name: str) -> None:
 
 
 def create_dir(directory_name: str, path: str | None = None) -> None:
-    if path is None:
-        dir = directory_name
-    else:
-        dir = f"{path}/{directory_name}"
-    if not os.path.exists(dir):
-        os.mkdir(dir)
+    directory = directory_name if path is None else f"{path}/{directory_name}"
+    if not os.path.exists(directory):
+        os.mkdir(directory)
 
 
 def main() -> None:

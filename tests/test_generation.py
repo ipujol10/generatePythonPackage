@@ -6,11 +6,13 @@ import shutil
 
 class Base:
     def remove(self, path: str) -> None:
-        if os.isdir(path):
+        if os.path.isdir(path):
             shutil.rmtree(path)
 
 
 class TestPackaging(unittest.TestCase, Base):
+    cases: str
+
     def setUp(self) -> None:
         path = os.path.dirname(os.path.abspath(__file__))
         self.cases = f"{path}/cases"
@@ -22,21 +24,23 @@ class TestPackaging(unittest.TestCase, Base):
 
     def test_no_directory(self) -> None:
         package_name = "test_empty"
-        dir = f"{self.cases}/{package_name}"
-        self.assertFalse(os.path.isdir(dir))
-        os.makedirs(dir)
-        self.assertTrue(os.path.isdir(dir))
+        directory = f"{self.cases}/{package_name}"
+        self.assertFalse(os.path.isdir(directory))
+        os.makedirs(directory)
+        self.assertTrue(os.path.isdir(directory))
         generate(package_name)
-        self.assertTrue(os.path.isdir(f"{dir}/src/{package_name}"))
-        self.assertTrue(os.path.isdir(f"{dir}/tests"))
-        self.assertTrue(os.path.isfile(f"{dir}/LICENSE"))
-        self.assertTrue(os.path.isfile(f"{dir}/pyproject.toml"))
-        self.assertTrue(os.path.isfile(f"{dir}/README.md"))
-        self.assertTrue(os.path.isfile(f"{dir}/src/{package_name}/\
+        self.assertTrue(os.path.isdir(f"{directory}/src/{package_name}"))
+        self.assertTrue(os.path.isdir(f"{directory}/tests"))
+        self.assertTrue(os.path.isfile(f"{directory}/LICENSE"))
+        self.assertTrue(os.path.isfile(f"{directory}/pyproject.toml"))
+        self.assertTrue(os.path.isfile(f"{directory}/README.md"))
+        self.assertTrue(os.path.isfile(f"{directory}/src/{package_name}/\
                 __init__.py"))
 
 
 class TestCreateUnits(unittest.TestCase, Base):
+    cases: str
+
     def setUp(self) -> None:
         path = os.path.dirname(os.path.abspath(__file__))
         self.cases = f"{path}/cases"
@@ -46,14 +50,14 @@ class TestCreateUnits(unittest.TestCase, Base):
 
     def test_create_dir_no_exists(self) -> None:
         package_name = "create_dir"
-        dir = f"{self.cases}/{package_name}"
-        self.assertFalse(os.path.isdir(f"{dir}/test"))
-        create_dir("test", dir)
-        self.assertTrue(os.path.isdir(f"{dir}/test"))
+        directory = f"{self.cases}/{package_name}"
+        self.assertFalse(os.path.isdir(f"{directory}/test"))
+        create_dir("test", directory)
+        self.assertTrue(os.path.isdir(f"{directory}/test"))
 
     def test_create_dir_exists(self) -> None:
         package_name = "create_dir"
-        dir = f"{self.cases}/{package_name}"
-        self.assertTrue(os.path.isdir(f"{dir}/test"))
-        create_dir("test", dir)
-        self.assertTrue(os.path.isdir(f"{dir}/test"))
+        directory = f"{self.cases}/{package_name}"
+        self.assertTrue(os.path.isdir(f"{directory}/test"))
+        create_dir("test", directory)
+        self.assertTrue(os.path.isdir(f"{directory}/test"))
