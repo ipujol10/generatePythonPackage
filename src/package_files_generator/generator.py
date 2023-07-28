@@ -16,9 +16,7 @@ def create_dir(directory_name: str, path: str | None = None) -> None:
 
 def get_last_folder(path: str) -> str:
     separated = path.split("/")
-    if len(separated) < 2:
-        return ""
-    return "/".join(separated[:-1])
+    return "" if len(separated) < 2 else "/".join(separated[:-1])
 
 
 def main() -> None:
