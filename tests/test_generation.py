@@ -17,7 +17,7 @@ class TestPackaging(unittest.TestCase, Base):
         path = os.path.dirname(os.path.abspath(__file__))
         self.cases = f"{path}/cases"
         if (not os.path.isdir(self.cases)):
-            os.makedirs(self.cases)
+            os.mkdir(self.cases)
 
     def tearDown(self) -> None:
         shutil.rmtree(f"{self.cases}/test_empty")
@@ -26,7 +26,7 @@ class TestPackaging(unittest.TestCase, Base):
         package_name = "test_empty"
         directory = f"{self.cases}/{package_name}"
         self.assertFalse(os.path.isdir(directory))
-        os.makedirs(directory)
+        os.mkdir(directory)
         self.assertTrue(os.path.isdir(directory))
         generate(package_name)
         self.assertTrue(os.path.isdir(f"{directory}/src/{package_name}"))
