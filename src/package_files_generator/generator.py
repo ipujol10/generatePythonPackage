@@ -11,6 +11,8 @@ def generate(package_name: str) -> None:
 def create_dir(directory_name: str, path: str | None = None) -> None:
     directory = directory_name if path is None else f"{path}/{directory_name}"
     if not os.path.exists(directory):
+        if last_dir := get_last_folder(directory):
+            create_dir(last_dir)
         os.mkdir(directory)
 
 
