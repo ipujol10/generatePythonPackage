@@ -40,26 +40,24 @@ class TestPackaging(unittest.TestCase, Base):
 
 class TestCreateUnits(unittest.TestCase, Base):
     cases: str
-    current: str
 
     def setUp(self) -> None:
         path = os.path.dirname(os.path.abspath(__file__))
         self.cases = f"{path}/cases"
 
-    def tearDown(self) -> None:
-        self.remove(f"{self.cases}/{self.current}")
-
     def test_create_dir_no_exists(self) -> None:
-        self.current = "create_dir_no_exists"
-        directory = f"{self.cases}/{self.current}"
+        current = "create_dir_no_exists"
+        directory = f"{self.cases}/{current}"
         self.assertFalse(os.path.isdir(f"{directory}"))
         create_dir("test", directory)
         self.assertTrue(os.path.isdir(f"{directory}"))
+        self.remove(f"{self.cases}/{current}")
 
     def test_create_dir_exists(self) -> None:
-        self.current = "create_dir_exists"
-        directory = f"{self.cases}/{self.current}"
-        self.assertTrue(os.path.isdir(f"{directory}"))
+        current = "create_dir_exists"
+        self.assertTrue(os.path.isdir(self.cases))
+        directory = f"{self.cases}/{current}"
+        if not os.path.isdir(directory):
+            os.mkdir(directory)
         create_dir("test", directory)
         self.assertTrue(os.path.isdir(f"{directory}"))
-        self.current = ""
