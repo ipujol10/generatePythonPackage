@@ -15,6 +15,11 @@ def create_dir(directory_name: str, path: str | None = None) -> None:
         os.mkdir(directory)
 
 
+def create_file(path: str, content: str | None = None,
+                directory: str | None = None) -> None:
+    raise NotImplementedError
+
+
 def get_last_folder(path: str) -> str:
     separated = path.split("/")
     return "" if len(separated) < 2 else "/".join(separated[:-1])

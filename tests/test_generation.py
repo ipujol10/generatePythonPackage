@@ -71,3 +71,10 @@ class TestCreateUnits(unittest.TestCase, Base):
         create_dir("test", directory)
         self.assertTrue(os.path.isdir(f"{directory}/test"))
         self.remove(directory)
+
+    @unittest.skip("Need to have the file checker")
+    def test_create_empty_file(self) -> None:
+        current = "create_empty_file"
+        directory = f"{self.cases}/{current}"
+        create_dir(directory)
+        raise NotImplementedError("Need to have the file checker")
