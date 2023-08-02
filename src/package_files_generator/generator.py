@@ -3,7 +3,6 @@ import os
 
 def generate(package_name: str) -> None:
     path = f"tests/cases/{package_name}"
-    create_dir(f"{path}/src")
     create_dir(f"{path}/src/{package_name}")
     create_dir(f"{path}/tests")
 

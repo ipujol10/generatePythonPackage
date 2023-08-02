@@ -44,13 +44,15 @@ class TestCreateUnits(unittest.TestCase, Base):
     def setUp(self) -> None:
         path = os.path.dirname(os.path.abspath(__file__))
         self.cases = f"{path}/cases"
+        if not os.path.isdir(self.cases):
+            os.mkdir(self.cases)
 
     def test_create_dir_no_exists(self) -> None:
         current = "create_dir_no_exists"
         directory = f"{self.cases}/{current}"
-        self.assertFalse(os.path.isdir(f"{directory}"))
-        create_dir("test", directory)
-        self.assertTrue(os.path.isdir(f"{directory}"))
+        self.assertFalse(os.path.isdir(directory))
+        create_dir(current, self.cases)
+        self.assertTrue(os.path.isdir(directory))
         self.remove(f"{self.cases}/{current}")
 
     def test_create_dir_exists(self) -> None:
@@ -59,5 +61,13 @@ class TestCreateUnits(unittest.TestCase, Base):
         directory = f"{self.cases}/{current}"
         if not os.path.isdir(directory):
             os.mkdir(directory)
+        create_dir(current, self.cases)
+        self.assertTrue(os.path.isdir(directory))
+
+    def test_create_double_dir(self) -> None:
+        current = "create_dir_double"
+        directory = f"{self.cases}/{current}"
+        self.assertFalse(os.path.isdir(directory))
         create_dir("test", directory)
-        self.assertTrue(os.path.isdir(f"{directory}"))
+        self.assertTrue(os.path.isdir(f"{directory}/test"))
+        self.remove(directory)
