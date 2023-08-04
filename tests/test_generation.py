@@ -1,6 +1,10 @@
+from math import log10
+from math import log10
 import unittest
 import os
-from package_files_generator.generator import generate, create_dir
+from package_files_generator.generator import create_dir
+from package_files_generator.generator import generate
+from package_files_generator.generator import get_final_path
 import shutil
 
 
@@ -78,3 +82,36 @@ class TestCreateUnits(unittest.TestCase, Base):
         directory = f"{self.cases}/{current}"
         create_dir(directory)
         raise NotImplementedError("Need to have the file checker")
+
+
+# class TestFileContents(unittest.TestCase):
+#     raise NotImplementedError
+
+
+class TestUtils(unittest.TestCase):
+    primary: str
+    secondary: str
+
+    def setUp(self) -> None:
+        self.primary = "primary"
+        self.secondary = "secondary"
+
+    def test_primary(self) -> None:
+        self.assertEqual(get_final_path(self.primary, None), "primary")
+        self.assertEqual(get_final_path(self.primary, ""), "primary")
+
+    def test_both(self) -> None:
+        self.assertEqual(
+                get_final_path(self.primary, self.secondary),
+                "secondary/primary"
+            )
+
+    def test_incorrect(self) -> None:
+        with self.assertRaises(TypeError):
+            get_final_path(extra=self.secondary)
+
+        with self.assertRaises(ValueError):
+            get_final_path("", self.secondary)
+
+        with self.assertRaises(ValueError):
+            get_final_path("", None)

@@ -25,6 +25,16 @@ def get_last_folder(path: str) -> str:
     return "" if len(separated) < 2 else "/".join(separated[:-1])
 
 
+def get_file_content(file: str, directory: str | None = None) -> str:
+    raise NotImplementedError
+
+
+def get_final_path(primary: str, extra: str | None) -> str:
+    if not primary:
+        raise ValueError("Primary path cannot be empty")
+    return primary if (extra is None or not extra) else f"{extra}/{primary}"
+
+
 def main() -> None:
     raise NotImplementedError
 
