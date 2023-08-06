@@ -1,10 +1,9 @@
-from math import log10
-from math import log10
 import unittest
 import os
 from package_files_generator.generator import create_dir
 from package_files_generator.generator import generate
 from package_files_generator.generator import get_final_path
+from package_files_generator.generator import get_file_content
 import shutil
 
 
@@ -84,9 +83,17 @@ class TestCreateUnits(unittest.TestCase, Base):
         raise NotImplementedError("Need to have the file checker")
 
 
-# class TestFileContents(unittest.TestCase):
-#     raise NotImplementedError
+class TestFileContents(unittest.TestCase):
+    def setUp(self) -> None:
+        files = "files"
+        if not os.path.isdir(files):
+            os.mkdir(files)
+        # Need to change location
+        open(f"{files}/empty.txt", "w").close()
 
+    def test_empty_file(self) -> None:
+        contents = get_file_content("empty.txt", "files")
+        self.assertEqual(contents, [])
 
 class TestUtils(unittest.TestCase):
     primary: str
