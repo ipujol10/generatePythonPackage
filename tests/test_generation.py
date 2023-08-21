@@ -88,12 +88,16 @@ class TestFileContents(unittest.TestCase):
         files = "files"
         if not os.path.isdir(files):
             os.mkdir(files)
-        # Need to change location
-        open(f"{files}/empty.txt", "w").close()
+        self.files = "tests/files"
 
     def test_empty_file(self) -> None:
-        contents = get_file_content("empty.txt", "files")
+        contents = get_file_content("empty.txt", self.files)
         self.assertEqual(contents, [])
+
+    def test_not_empty(self) -> None:
+        contents = get_file_content("not_empty.txt", self.files)
+        self.assertEqual(contents, ["123", "abc", "test"])
+
 
 class TestUtils(unittest.TestCase):
     primary: str
