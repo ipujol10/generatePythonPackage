@@ -1,10 +1,46 @@
 import os
+import datetime
 
 
-def generate(package_name: str) -> None:
+def generate(package_name: str, username: str) -> None:
     path = f"tests/cases/{package_name}"
     create_dir(f"{path}/src/{package_name}")
     create_dir(f"{path}/tests")
+    create_file("LICENSE", generate_license(username), path)
+
+
+def generate_license(username: str) -> str:
+    year = datetime.datetime.now().year
+    text = "MIT License\n\n"
+    text += f"Copyright (c) {year} {username}\n\n"
+    text += ("Permission is hereby granted, free of charge, to any person "
+             "obtaining a copy\n")
+    text += ("of this software and associated documentation files "
+             "(the \"Software\"), to deal\n")
+    text += ("in the Software without restriction, including without "
+             "limitation the rights\n")
+    text += ("to use, copy, modify, merge, publish, distribute, "
+             "sublicense, and/or sell\n")
+    text += ("copies of the Software, and to permit persons to "
+             "whom the Software is\n")
+    text += "furnished to do so, subject to the following conditions:\n\n"
+    text += ("The above copyright notice and this permission notice "
+             "shall be included in all\n")
+    text += "copies or substantial portions of the Software.\n\n"
+    text += ("THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY "
+             "OF ANY KIND, EXPRESS OR\n")
+    text += ("IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF "
+             "MERCHANTABILITY,\n")
+    text += ("FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. "
+             "IN NO EVENT SHALL THE\n")
+    text += ("AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, "
+             "DAMAGES OR OTHER\n")
+    text += ("LIABILITY, WHETHER IN AN ACTION OF CONTRACT, "
+             "TORT OR OTHERWISE, ARISING FROM,\n")
+    text += ("OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR "
+             "OTHER DEALINGS IN THE\n")
+    text += "SOFTWARE."
+    return text
 
 
 def create_dir(directory_name: str, path: str | None = None) -> None:
