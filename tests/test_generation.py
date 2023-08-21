@@ -4,6 +4,7 @@ from package_files_generator.generator import create_dir
 from package_files_generator.generator import generate
 from package_files_generator.generator import get_final_path
 from package_files_generator.generator import get_file_content
+from package_files_generator.generator import create_file
 import shutil
 
 
@@ -75,12 +76,27 @@ class TestCreateUnits(unittest.TestCase, Base):
         self.assertTrue(os.path.isdir(f"{directory}/test"))
         self.remove(directory)
 
-    @unittest.skip("Need to have the file checker")
     def test_create_empty_file(self) -> None:
         current = "create_empty_file"
         directory = f"{self.cases}/{current}"
         create_dir(directory)
-        raise NotImplementedError("Need to have the file checker")
+        create_file("empty.txt", directory=directory)
+        self.assertEqual(get_file_content("empty.txt", directory), [])
+        file = f"{directory}/empty.txt"
+        os.remove(file)
+        self.assertFalse(os.path.isfile(file))
+
+    def test_create_file(self) -> None:
+        current = "create_file"
+        directory = f"{self.cases}/{current}"
+        create_dir(directory)
+        create_file("test.txt", "test1\ntest2", directory)
+        self.assertEqual(
+                get_file_content("test.txt", directory), ["test1", "test2"]
+            )
+        file = f"{directory}/test.txt"
+        os.remove(file)
+        self.assertFalse(os.path.isfile(file))
 
 
 class TestFileContents(unittest.TestCase):

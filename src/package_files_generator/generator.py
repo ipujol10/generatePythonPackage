@@ -15,9 +15,12 @@ def create_dir(directory_name: str, path: str | None = None) -> None:
         os.mkdir(directory)
 
 
-def create_file(path: str, content: str | None = None,
+def create_file(file: str, content: str | None = None,
                 directory: str | None = None) -> None:
-    raise NotImplementedError
+    file = get_final_path(file, directory)
+    content = "" if content is None else content
+    with open(file, "w") as f:
+        f.write(content)
 
 
 def get_last_folder(path: str) -> str:
