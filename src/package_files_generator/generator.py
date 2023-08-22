@@ -106,27 +106,6 @@ def process_pyproject_line(
     return group, n + 1
 
 
-# def process_pyproject_line(
-#         line: str, data: dict[str, dict[str, str]], group: str | None) -> str:
-#     line = line.strip()
-#     if not line:
-#         if group is None:
-#             raise ValueError("Blank line at the beggining")
-#         return group
-#     if (line[0] == "["):
-#         if (line in data):
-#             raise ValueError(f"Group {line} already exists")
-#         data[line] = {}
-#         return line
-#     if group is None:
-#         raise ValueError("Element displayed before a group")
-#     key, value = line.split(" = ")
-#     data[group][key] = value
-#     return group
-
-
-
-
 def generate_pyproject(file: str, data: dict[str, dict[str, str]]) -> None:
     raise NotImplementedError
 
