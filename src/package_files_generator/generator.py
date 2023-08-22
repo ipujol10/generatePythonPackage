@@ -75,6 +75,41 @@ def get_final_path(primary: str, extra: str | None) -> str:
     return primary if (extra is None or not extra) else f"{extra}/{primary}"
 
 
+def read_pyproject(file: str) -> dict[str, dict[str, str]]:
+    output: dict[str, dict[str, str]] = {}
+    if not os.path.isfile(file):
+        return output
+    with open(file, "r") as f:
+        group = None
+        for line in f:
+            print(line)
+            group = process_pyproject_line(line, output, group)
+    return output
+
+
+def process_pyproject_line(
+        line: str, data: dict[str, dict[str, str]], group: str | None) -> str:
+    line = line.strip()
+    if not line:
+        if group is None:
+            raise ValueError("Blank line at the beggining")
+        return group
+    if (line[0] == "["):
+        if (line in data):
+            raise ValueError(f"Group {line} already exists")
+        data[line] = {}
+        return line
+    if group is None:
+        raise ValueError("Element displayed before a group")
+    key, value = line.split(" = ")
+    data[group][key] = value
+    return group
+
+
+def generate_pyproject(file: str, data: dict[str, dict[str, str]]) -> None:
+    raise NotImplementedError
+
+
 def main() -> None:
     raise NotImplementedError
 

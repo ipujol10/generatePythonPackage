@@ -6,6 +6,7 @@ from package_files_generator.generator import generate
 from package_files_generator.generator import get_final_path
 from package_files_generator.generator import get_file_content
 from package_files_generator.generator import create_file
+from package_files_generator.generator import read_pyproject
 import shutil
 
 
@@ -170,3 +171,44 @@ class TestUtils(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             get_final_path("", None)
+
+
+class TestPyProjectHandler(unittest.TestCase):
+    def setUp(self) -> None:
+        self.folder = "tests/cases/pyproject"
+        create_dir(self.folder)
+        create_file("empty.toml", directory=self.folder)
+        create_file("full.toml", self.full_contents(), self.folder)
+
+    def full_contents(self) -> str:
+        return ("[project]\n"
+                "name = \"test\"\n"
+                "version = \"0.0.1\"\n\n"
+                "[projects.urls]\n"
+                "\"Homepage\" = \"https.com\""
+                )
+
+    def test_read_empty_project(self) -> None:
+        file = f"{self.folder}/empty.toml"
+        contents = read_pyproject(file)
+        self.assertEqual(contents, {})
+
+    def test_read_project(self) -> None:
+        file = f"{self.folder}/full.toml"
+        contents = read_pyproject(file)
+        self.assertEqual(
+                contents,
+                {"[project]": {
+                    "name": "\"test\"",
+                    "version": "\"0.0.1\""
+                    },
+                 "[project.urls]": {
+                     "\"Homepage\"": "\"https.com\""
+                     }
+                 }
+                )
+
+    def test_not_existing_project(self) -> None:
+        file = f"{self.folder}/something.toml"
+        contents = read_pyproject(file)
+        self.assertEqual(contents, {})
