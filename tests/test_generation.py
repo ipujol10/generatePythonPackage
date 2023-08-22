@@ -130,10 +130,9 @@ class TestCreateUnits(unittest.TestCase, Base):
 
 class TestFileContents(unittest.TestCase):
     def setUp(self) -> None:
-        files = "files"
-        if not os.path.isdir(files):
-            os.mkdir(files)
         self.files = "tests/files"
+        if not os.path.isdir(self.files):
+            os.mkdir(self.files)
 
     def test_empty_file(self) -> None:
         contents = get_file_content("empty.txt", self.files)
