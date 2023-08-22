@@ -184,7 +184,7 @@ class TestPyProjectHandler(unittest.TestCase):
         return ("[project]\n"
                 "name = \"test\"\n"
                 "version = \"0.0.1\"\n\n"
-                "[projects.urls]\n"
+                "[project.urls]\n"
                 "\"Homepage\" = \"https.com\""
                 )
 

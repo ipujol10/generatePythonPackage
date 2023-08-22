@@ -79,31 +79,52 @@ def read_pyproject(file: str) -> dict[str, dict[str, str]]:
     output: dict[str, dict[str, str]] = {}
     if not os.path.isfile(file):
         return output
+    lines: list[str] = []
     with open(file, "r") as f:
-        group = None
-        for line in f:
-            print(line)
-            group = process_pyproject_line(line, output, group)
+        lines = f.readlines()
+    group = ""
+    n = 0
+    while n < len(lines):
+        group, n = process_pyproject_line(lines, n, output, group)
     return output
 
 
 def process_pyproject_line(
-        line: str, data: dict[str, dict[str, str]], group: str | None) -> str:
-    line = line.strip()
+        file: list[str], n: int, data: dict[str, dict[str, str]], group: str
+        ) -> tuple[str, int]:
+    line = file[n].strip()
     if not line:
-        if group is None:
-            raise ValueError("Blank line at the beggining")
-        return group
+        return group, n + 1
     if (line[0] == "["):
-        if (line in data):
-            raise ValueError(f"Group {line} already exists")
-        data[line] = {}
-        return line
-    if group is None:
+        if line not in data:
+            data[line] = {}
+        return line, n + 1
+    if not group:
         raise ValueError("Element displayed before a group")
     key, value = line.split(" = ")
     data[group][key] = value
-    return group
+    return group, n + 1
+
+
+# def process_pyproject_line(
+#         line: str, data: dict[str, dict[str, str]], group: str | None) -> str:
+#     line = line.strip()
+#     if not line:
+#         if group is None:
+#             raise ValueError("Blank line at the beggining")
+#         return group
+#     if (line[0] == "["):
+#         if (line in data):
+#             raise ValueError(f"Group {line} already exists")
+#         data[line] = {}
+#         return line
+#     if group is None:
+#         raise ValueError("Element displayed before a group")
+#     key, value = line.split(" = ")
+#     data[group][key] = value
+#     return group
+
+
 
 
 def generate_pyproject(file: str, data: dict[str, dict[str, str]]) -> None:
