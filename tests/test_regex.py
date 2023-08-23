@@ -1,5 +1,6 @@
 import unittest
 import re
+from package_files_generator.regex import starts_with
 
 
 class TestRegex(unittest.TestCase):
@@ -26,3 +27,12 @@ class TestRegex(unittest.TestCase):
     def test_sub(self) -> None:
         self.assertEqual(re.sub("\s", "9", self.sentence), "A9dog9can9dig")
         self.assertEqual(re.sub("\s", "9", self.sentence, 2), "A9dog9can dig")
+
+
+class TestOwnRegex(unittest.TestCase):
+    def setUp(self) -> None:
+        self.sentence = "[project]"
+
+    def test_starts_with(self) -> None:
+        self.assertTrue(starts_with("\[", self.sentence))  # ]
+        self.assertFalse(starts_with("p", self.sentence))
