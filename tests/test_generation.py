@@ -179,6 +179,7 @@ class TestPyProjectHandler(unittest.TestCase):
         create_dir(self.folder)
         create_file("empty.toml", directory=self.folder)
         create_file("full.toml", self.full_contents(), self.folder)
+        create_file("extra.toml", self.extra_contents(), self.folder)
 
     def full_contents(self) -> str:
         return ("[project]\n"
@@ -186,6 +187,31 @@ class TestPyProjectHandler(unittest.TestCase):
                 "version = \"0.0.1\"\n\n"
                 "[project.urls]\n"
                 "\"Homepage\" = \"https.com\""
+                )
+
+    def extra_contents(self) -> str:
+        return ("[build-system]\n"
+                "requires = [\"hatchling\"]\n"
+                "build-backend = \"hatchling\"\n\n"
+                "[project]\n"
+                "name = \"package_files_generator\"\n"
+                "version = \"0.0.1\"\n"
+                "authors = [\n"
+                "\t{ name = \"Iñaki Pujol\", "
+                "email = \"ipujol10@gmail.com\" }\n"
+                "]\n"
+                "description = \"Generate the files to make a package "
+                "out of a piece of code\"\n"
+                "readme = \"README.md\"\n"
+                "requires-python = \">=3.9\"\n"
+                "classifiers = ["
+                "\t\"Programming Language :: Python :: 3\",\n"
+                "\t\"License :: OSI Approved :: MIT License\",\n"
+                "\t\"Operating System :: OS Independent\",\n"
+                "]\n\n"
+                "[project.urls]"
+                "\"Homepage\" = \"test\"\n"
+                "\"Bug Tracker\" = \"test/issues\""
                 )
 
     def test_read_empty_project(self) -> None:
@@ -212,3 +238,38 @@ class TestPyProjectHandler(unittest.TestCase):
         file = f"{self.folder}/something.toml"
         contents = read_pyproject(file)
         self.assertEqual(contents, {})
+
+    def test_extra_contents(self) -> None:
+        file = f"{self.folder}/extra.toml"
+        contents = read_pyproject(file)
+        self.assertEqual(
+                contents,
+                {"[build-systems]": {
+                    "requires": "[\"hatchling\"]",
+                    "build-backend": "\"hatchling.build\""
+                    },
+                 "[project]": {
+                     "name": "\"package_files_generator\"",
+                     "version": "\"0.0.1\"",
+                     "authors": [
+                         ("{ name = \"Iñaki Pujol\", "
+                          "email = \"ipujol10@gmail.com\" }"
+                          )
+                         ],
+                     "description": ("\"Generate the files to make a "
+                                     "package out of a piece of code\""),
+                     "readme": "\"README.md\"",
+                     "requires-python": "\">=3.9\"",
+                     "classifiers": [
+                         "\"Programming Language :: Python :: 3\"",
+                         "\"License :: OSI Approved :: MIT License\"",
+                         "\"Operating System :: OS Independent\"",
+                         ]
+                     },
+                 "[project.urls]": {
+                     "\"Homepage\"": "\"test\"",
+                     "\"Bug Tracker\"": "\"test/issues\""
+                     }
+                 }
+
+                )
