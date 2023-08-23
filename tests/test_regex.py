@@ -1,6 +1,7 @@
 import unittest
 import re
 from package_files_generator.regex import starts_with
+from package_files_generator.regex import separate_equal
 
 
 class TestRegex(unittest.TestCase):
@@ -36,3 +37,19 @@ class TestOwnRegex(unittest.TestCase):
     def test_starts_with(self) -> None:
         self.assertTrue(starts_with("\[", self.sentence))  # ]
         self.assertFalse(starts_with("p", self.sentence))
+
+    def test_separate_equal(self) -> None:
+        self.assertEqual(
+                separate_equal("name = \"package_files_generator\""),
+                ["name", "\"package_files_generator\""]
+                )
+        self.assertEqual(
+                separate_equal(
+                    "\"Homepage\" = "
+                    "\"https//:something.com/123isahd=123nasbd=\""
+                    ),
+                [
+                    "\"Homepage\"",
+                    "\"https//:something.com/123isahd=123nasbd=\""
+                    ]
+                )

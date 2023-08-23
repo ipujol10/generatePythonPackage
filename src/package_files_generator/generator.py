@@ -1,5 +1,7 @@
 import os
 import datetime
+from package_files_generator.regex import starts_with
+from package_files_generator.regex import separate_equal
 
 
 def generate(package_name: str, username: str) -> None:
@@ -95,13 +97,13 @@ def process_pyproject_line(
     line = file[n].strip()
     if not line:
         return group, n + 1
-    if (line[0] == "["):
+    if starts_with("\[", line):  # ]
         if line not in data:
             data[line] = {}
         return line, n + 1
     if not group:
         raise ValueError("Element displayed before a group")
-    key, value = line.split(" = ")
+    key, value = separate_equal(line)
     data[group][key] = value
     return group, n + 1
 
