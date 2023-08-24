@@ -24,4 +24,4 @@ def clean_start(text: str) -> str:
 
 
 def prepare_list_item(text: str) -> str:
-    return re.sub(r"(,?\s*)$", ", ", text)
+    return re.sub(r"(,?\s*)$", ", ", text, 1)

@@ -1,8 +1,9 @@
 import os
 import datetime
-from package_files_generator.regex import ends_with, starts_with
+from package_files_generator.regex import clean_start, ends_with, starts_with
 from package_files_generator.regex import separate_equal
 from package_files_generator.regex import clean_end_list
+from package_files_generator.regex import prepare_list_item
 
 
 def generate(package_name: str, username: str) -> None:
@@ -118,7 +119,9 @@ def get_list(file: list[str], n: int, value: str) -> tuple[str, int]:
     if starts_with(r"\s*\]", line):
         value += f"{clean_end_list(line)}]"
         return value, n
-    raise NotImplementedError
+    line = prepare_list_item(clean_start(line))
+    value += line
+    return get_list(file, n, value)
 
 
 def generate_pyproject(file: str, data: dict[str, dict[str, str]]) -> None:
