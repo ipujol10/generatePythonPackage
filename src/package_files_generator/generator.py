@@ -1,7 +1,8 @@
 import os
 import datetime
-from package_files_generator.regex import starts_with
+from package_files_generator.regex import ends_with, starts_with
 from package_files_generator.regex import separate_equal
+from package_files_generator.regex import clean_end_list
 
 
 def generate(package_name: str, username: str) -> None:
@@ -97,15 +98,27 @@ def process_pyproject_line(
     line = file[n].strip()
     if not line:
         return group, n + 1
-    if starts_with("\[", line):  # ]
+    if starts_with(r"\[", line):  # ]
         if line not in data:
             data[line] = {}
         return line, n + 1
     if not group:
         raise ValueError("Element displayed before a group")
     key, value = separate_equal(line)
+    if ends_with(r"[\[\{]\s*", value):  # }]
+        value = clean_end_list(value)
+        raise NotImplementedError
     data[group][key] = value
     return group, n + 1
+
+
+def get_list(file: list[str], n: int, value: str) -> tuple[str, int]:
+    n += 1
+    line = file[n].strip()
+    if starts_with(r"\s*\]", line):
+        value += f"{clean_end_list(line)}]"
+        return value, n
+    raise NotImplementedError
 
 
 def generate_pyproject(file: str, data: dict[str, dict[str, str]]) -> None:

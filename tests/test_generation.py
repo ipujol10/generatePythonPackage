@@ -7,6 +7,7 @@ from package_files_generator.generator import get_final_path
 from package_files_generator.generator import get_file_content
 from package_files_generator.generator import create_file
 from package_files_generator.generator import read_pyproject
+from package_files_generator.generator import get_list
 import shutil
 
 
@@ -273,4 +274,11 @@ class TestPyProjectHandler(unittest.TestCase):
                      }
                  }
 
+                )
+
+    def test_get_list(self) -> None:
+        file = ["a = [", "  a,", "\"b\",", "     ]"]
+        self.assertNotEqual(
+                get_list(file, 0, "a = ["),  # ]
+                "a = [a, \"b\"]"
                 )
