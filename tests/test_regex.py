@@ -6,6 +6,8 @@ from package_files_generator.regex import ends_with
 from package_files_generator.regex import clean_end_list
 from package_files_generator.regex import clean_start
 from package_files_generator.regex import prepare_list_item
+from package_files_generator.regex import is_title
+from package_files_generator.regex import get_title
 
 
 class TestRegex(unittest.TestCase):
@@ -86,3 +88,14 @@ class TestOwnRegex(unittest.TestCase):
                 )
         self.assertEqual(prepare_list_item("a"), "a, ")
         self.assertEqual(prepare_list_item("a,      "), "a, ")
+
+    def test_is_title(self) -> None:
+        self.assertTrue(is_title("[asdasd]"))
+        self.assertTrue(is_title("         [asdas]        "))
+        self.assertFalse(is_title("[asdasd"))  # ]
+        self.assertFalse(is_title("asdsa]"))
+        self.assertFalse(is_title("]"))
+
+    def test_get_title(self) -> None:
+        self.assertEqual(get_title("[asd]"), "[asd]")
+        self.assertEqual(get_title("    [asd]      "), "[asd]")

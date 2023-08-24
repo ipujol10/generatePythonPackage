@@ -25,3 +25,16 @@ def clean_start(text: str) -> str:
 
 def prepare_list_item(text: str) -> str:
     return re.sub(r"(,?\s*)$", ", ", text, 1)
+
+
+def is_title(text: str) -> bool:
+    search = re.search(r"^\s*\[.+\]\s*$", text)
+    return False if search is None else bool(search)
+
+
+def get_title(text: str) -> str:
+    search = re.search(r"\[.+\]", text)
+    if search is None:
+        raise ValueError
+    s, e = search.span()
+    return text[s:e]

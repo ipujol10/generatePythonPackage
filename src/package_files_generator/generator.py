@@ -1,9 +1,12 @@
 import os
 import datetime
-from package_files_generator.regex import clean_start, ends_with, starts_with
+from package_files_generator.regex import clean_start, ends_with
 from package_files_generator.regex import separate_equal
 from package_files_generator.regex import clean_end_list
 from package_files_generator.regex import prepare_list_item
+from package_files_generator.regex import starts_with
+from package_files_generator.regex import is_title
+from package_files_generator.regex import get_title
 
 
 def generate(package_name: str, username: str) -> None:
@@ -89,7 +92,6 @@ def read_pyproject(file: str) -> dict[str, dict[str, str]]:
     group = ""
     n = 0
     while n < len(lines):
-        print(f"{n=}")
         group, n = process_pyproject_line(lines, n, output, group)
     return output
 
@@ -100,14 +102,16 @@ def process_pyproject_line(
     line = file[n].strip()
     if not line:
         return group, n + 1
-    if starts_with(r"\[", line):  # ]
+    if is_title(line):
+        print(line)
+        line = get_title(line)
         if line not in data:
             data[line] = {}
         return line, n + 1
     if not group:
         raise ValueError("Element displayed before a group")
     key, value = separate_equal(line)
-    if ends_with(r"[\[\{]\s*", value):  # }]
+    if starts_with(r"[\[{]\s*", value) and not ends_with(r"\]\s*", value):
         value = clean_end_list(value)
         value, n = get_list(file, n, value)
     data[group][key] = value

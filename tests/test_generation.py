@@ -243,9 +243,11 @@ class TestPyProjectHandler(unittest.TestCase):
     def test_extra_contents(self) -> None:
         file = f"{self.folder}/extra.toml"
         contents = read_pyproject(file)
+        self.maxDiff = None
+        # print(contents)
         self.assertEqual(
                 contents,
-                {"[build-systems]": {
+                {"[build-system]": {
                     "requires": "[\"hatchling\"]",
                     "build-backend": "\"hatchling.build\""
                     },
@@ -278,6 +280,6 @@ class TestPyProjectHandler(unittest.TestCase):
     def test_get_list(self) -> None:
         file = ["a = [", "  a,", "\"b\",", "     ]"]
         self.assertNotEqual(
-                get_list(file, 0, "a = ["),  # ]
+                get_list(file, 0, "a = [")[0],  # ]
                 "a = [a, \"b\"]"
                 )
