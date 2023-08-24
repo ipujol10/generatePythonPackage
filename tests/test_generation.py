@@ -210,7 +210,7 @@ class TestPyProjectHandler(unittest.TestCase):
                 "\t\"License :: OSI Approved :: MIT License\",\n"
                 "\t\"Operating System :: OS Independent\",\n"
                 "]\n\n"
-                "[project.urls]"
+                "[project.urls]\n"
                 "\"Homepage\" = \"test\"\n"
                 "\"Bug Tracker\" = \"test/issues\""
                 )
@@ -240,7 +240,6 @@ class TestPyProjectHandler(unittest.TestCase):
         contents = read_pyproject(file)
         self.assertEqual(contents, {})
 
-    @ unittest.skip("need to test a bit more before going to this")
     def test_extra_contents(self) -> None:
         file = f"{self.folder}/extra.toml"
         contents = read_pyproject(file)

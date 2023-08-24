@@ -89,6 +89,7 @@ def read_pyproject(file: str) -> dict[str, dict[str, str]]:
     group = ""
     n = 0
     while n < len(lines):
+        print(f"{n=}")
         group, n = process_pyproject_line(lines, n, output, group)
     return output
 
@@ -108,7 +109,7 @@ def process_pyproject_line(
     key, value = separate_equal(line)
     if ends_with(r"[\[\{]\s*", value):  # }]
         value = clean_end_list(value)
-        raise NotImplementedError
+        value, n = get_list(file, n, value)
     data[group][key] = value
     return group, n + 1
 

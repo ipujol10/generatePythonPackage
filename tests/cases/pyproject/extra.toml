@@ -16,5 +16,6 @@ classifiers = [	"Programming Language :: Python :: 3",
 	"Operating System :: OS Independent",
 ]
 
-[project.urls]"Homepage" = "test"
+[project.urls]
+"Homepage" = "test"
 "Bug Tracker" = "test/issues"
