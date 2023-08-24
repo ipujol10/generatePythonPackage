@@ -2,6 +2,7 @@ import unittest
 import re
 from package_files_generator.regex import starts_with
 from package_files_generator.regex import separate_equal
+from package_files_generator.regex import ends_with
 
 
 class TestRegex(unittest.TestCase):
@@ -53,3 +54,11 @@ class TestOwnRegex(unittest.TestCase):
                     "\"https//:something.com/123isahd=123nasbd=\""
                     ]
                 )
+        self.assertEqual(
+                separate_equal("desc = \"Something = Something\""),
+                ["desc", "\"Something = Something\""]
+                )
+
+    def test_ends_with(self) -> None:
+        self.assertTrue(ends_with("\]", self.sentence))
+        self.assertFalse(ends_with("t", self.sentence))
