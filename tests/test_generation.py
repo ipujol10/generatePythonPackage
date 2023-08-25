@@ -193,7 +193,7 @@ class TestPyProjectHandler(unittest.TestCase):
     def extra_contents(self) -> str:
         return ("[build-system]\n"
                 "requires = [\"hatchling\"]\n"
-                "build-backend = \"hatchling\"\n\n"
+                "build-backend = \"hatchling.build\"\n\n"
                 "[project]\n"
                 "name = \"package_files_generator\"\n"
                 "version = \"0.0.1\"\n"
@@ -244,7 +244,7 @@ class TestPyProjectHandler(unittest.TestCase):
         file = f"{self.folder}/extra.toml"
         contents = read_pyproject(file)
         self.maxDiff = None
-        # print(contents)
+        print(contents)
         self.assertEqual(
                 contents,
                 {"[build-system]": {
@@ -254,20 +254,18 @@ class TestPyProjectHandler(unittest.TestCase):
                  "[project]": {
                      "name": "\"package_files_generator\"",
                      "version": "\"0.0.1\"",
-                     "authors": [
-                         ("{ name = \"Iñaki Pujol\", "
-                          "email = \"ipujol10@gmail.com\" }"
-                          )
-                         ],
+                     "authors": ("[{ name = \"Iñaki Pujol\", "
+                                 "email = \"ipujol10@gmail.com\" }]"
+                                 ),
                      "description": ("\"Generate the files to make a "
                                      "package out of a piece of code\""),
                      "readme": "\"README.md\"",
                      "requires-python": "\">=3.9\"",
-                     "classifiers": [
-                         "\"Programming Language :: Python :: 3\"",
-                         "\"License :: OSI Approved :: MIT License\"",
-                         "\"Operating System :: OS Independent\"",
-                         ]
+                     "classifiers": (
+                         "[\"Programming Language :: Python :: 3\", "
+                         "\"License :: OSI Approved :: MIT License\", "
+                         "\"Operating System :: OS Independent\"]"
+                         )
                      },
                  "[project.urls]": {
                      "\"Homepage\"": "\"test\"",

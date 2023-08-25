@@ -73,6 +73,7 @@ class TestOwnRegex(unittest.TestCase):
         self.assertEqual(clean_end_list("asdsa,   "), "asdsa")
         self.assertEqual(clean_end_list("asdsa"), "asdsa")
         self.assertEqual(clean_end_list("a b c, "), "a b c")
+        self.assertEqual(clean_end_list("a, b, c, d, "), "a, b, c, d")
 
     def test_clean_start(self) -> None:
         self.assertEqual(

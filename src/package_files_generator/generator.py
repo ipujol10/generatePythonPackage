@@ -103,7 +103,6 @@ def process_pyproject_line(
     if not line:
         return group, n + 1
     if is_title(line):
-        print(line)
         line = get_title(line)
         if line not in data:
             data[line] = {}
@@ -122,7 +121,8 @@ def get_list(file: list[str], n: int, value: str) -> tuple[str, int]:
     n += 1
     line = file[n].strip()
     if starts_with(r"\s*\]", line):
-        value += f"{clean_end_list(line)}]"
+        print(f"{n=}")
+        value += f"{clean_end_list(file[n-1].strip())}]"
         return value, n
     line = prepare_list_item(clean_start(line))
     value += line
